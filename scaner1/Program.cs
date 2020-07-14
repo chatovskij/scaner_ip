@@ -15,17 +15,27 @@ namespace scaner1
 
         private const string host = "172.24.188.21";
 
+        private static string[] allLanInterfaces;
+
+        private static string mainLanInterface;
+
         static void Main(string[] args)
         {
             Console.WriteLine("This is the port scanner");
-            Console.WriteLine(GetAllLocalIPv4(NetworkInterfaceType.Ethernet).FirstOrDefault());
-            Console.WriteLine(GetAllLocalIPv4(NetworkInterfaceType.Wireless80211).FirstOrDefault());
+            mainLanInterface = GetAllLocalIPv4(NetworkInterfaceType.Ethernet).FirstOrDefault();
+            //Console.WriteLine(GetAllLocalIPv4(NetworkInterfaceType.Wireless80211).FirstOrDefault());
+
+            allLanInterfaces = GetAllLocalIPv4(NetworkInterfaceType.Ethernet);
+            for(int n = 0; n < allLanInterfaces.Length; n++)
+            {
+                Console.WriteLine(allLanInterfaces[n]);
+            }
             Scan();
         }
 
         public static void Scan()
         {
-            IPAddress IpAddr = IPAddress.Parse(host);
+            IPAddress IpAddr = IPAddress.Parse(mainLanInterface);
 
                 //Create socket
                 IPEndPoint IpEndP = new IPEndPoint(IpAddr, 8888);
